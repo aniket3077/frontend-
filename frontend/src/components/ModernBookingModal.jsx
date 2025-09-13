@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import config from '../config/env.js';
+import ENDPOINTS, { urlFor } from '../config/endpoints.js';
 
 const ModernBookingModal = () => {
   // Removed isOpen state, always show booking form
@@ -93,7 +94,7 @@ const ModernBookingModal = () => {
     }
     setLoading(true);
     try {
-      const bookingUrl = `${apiBase}/api/bookings/create`;
+  const bookingUrl = urlFor(ENDPOINTS.bookings.create);
       console.log('🔧 Debug: Calling booking URL:', bookingUrl);
       const payload = {
         booking_date: ticketData.booking_date,
@@ -103,7 +104,7 @@ const ModernBookingModal = () => {
       };
       console.log('🔧 Debug: Payload:', payload);
 
-      const res = await axios.post(bookingUrl, payload);
+  const res = await axios.post(bookingUrl, payload);
       if (res.data.success) {
         setBookingId(res.data.booking.id);
         setStep(2);
@@ -155,7 +156,7 @@ const ModernBookingModal = () => {
     }
     setLoading(true);
     try {
-      const res = await axios.post(`${apiBase}/api/bookings/add-users`, {
+      const res = await axios.post(urlFor(ENDPOINTS.bookings.addUsers), {
         booking_id: bookingId,
         ...userData,
       });
@@ -186,7 +187,7 @@ const ModernBookingModal = () => {
     setLoading(true);
     try {
       // Do not send amount; server will compute from booking
-      const orderRes = await axios.post(`${apiBase}/api/bookings/create-payment`, {
+      const orderRes = await axios.post(urlFor(ENDPOINTS.bookings.createPayment), {
         booking_id: bookingId,
         userEmail: userData.email,
         userName: userData.name,
@@ -216,7 +217,7 @@ const ModernBookingModal = () => {
         prefill: { name: userData.name, email: userData.email, contact: userData.phone },
         handler: async function (response) {
           try {
-            const confirmRes = await axios.post(`${apiBase}/api/bookings/confirm-payment`, {
+            const confirmRes = await axios.post(urlFor(ENDPOINTS.bookings.confirmPayment), {
               booking_id: bookingId,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
@@ -358,7 +359,7 @@ const ModernBookingModal = () => {
                     <select
                       value={ticketData.pass_type}
                       onChange={(e) => setTicketData({ ...ticketData, pass_type: e.target.value })}
-                      className="w-full px-2 py-1.5 border border-gray-200 rounded focus:ring-1 focus:ring-orange-400 focus:border-orange-400 focus:outline-none text-gray-700 text-xs appearance-none bg-white text-base"
+                      className="w-full px-2 py-1.5 border border-gray-200 rounded focus:ring-1 focus:ring-orange-400 focus:border-orange-400 focus:outline-none text-gray-700 text-xs appearance-none bg-white"
                     >
                       {Object.entries(labelMap[ticketType]).map(([key, label]) => (
                         <option key={key} value={key}>{label}</option>

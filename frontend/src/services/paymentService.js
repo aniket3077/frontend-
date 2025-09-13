@@ -1,6 +1,4 @@
-import config from '../config/env.js';
-
-const API_BASE_URL = config.API_BASE_URL;
+import ENDPOINTS, { urlFor } from '../config/endpoints.js';
 
 class PaymentService {
   // Load Razorpay script dynamically
@@ -22,7 +20,7 @@ class PaymentService {
   // Create payment order
   async createPaymentOrder(orderData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/payments/create-order`, {
+      const response = await fetch(urlFor(ENDPOINTS.payments.createOrder), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +48,7 @@ class PaymentService {
   // Verify payment
   async verifyPayment(paymentData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/payments/verify`, {
+      const response = await fetch(urlFor(ENDPOINTS.payments.verify), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +71,7 @@ class PaymentService {
   // Get payment status
   async getPaymentStatus(paymentId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/payments/status/${paymentId}`);
+  const response = await fetch(urlFor(ENDPOINTS.payments.status(paymentId)));
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

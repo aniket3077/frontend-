@@ -1,4 +1,5 @@
 import config from '../config/env.js';
+import ENDPOINTS, { urlFor } from '../config/endpoints.js';
 
 class ApiService {
   constructor() {
@@ -7,7 +8,7 @@ class ApiService {
 
   // Helper method to make API requests with better error handling
   async makeRequest(endpoint, options = {}) {
-    const url = `${this.baseURL}${endpoint}`;
+    const url = endpoint.startsWith('http') ? endpoint : urlFor(endpoint);
     
     const defaultOptions = {
       method: 'GET',
@@ -16,6 +17,11 @@ class ApiService {
       },
       ...options
     };
+
+    // Auto-stringify JSON body if it's a plain object
+    if (defaultOptions.body && typeof defaultOptions.body === 'object' && !(defaultOptions.body instanceof FormData)) {
+      defaultOptions.body = JSON.stringify(defaultOptions.body);
+    }
 
     try {
       console.log(`🌐 Making API request to: ${url}`);
@@ -50,45 +56,45 @@ class ApiService {
 
   // Booking API methods
   async createBooking(bookingData) {
-    return this.makeRequest('/api/bookings/create', {
+    return this.makeRequest(ENDPOINTS.bookings.create, {
       method: 'POST',
-      body: JSON.stringify(bookingData)
+      body: bookingData
     });
   }
 
   // QR API methods
   async getQRDetails(qrData) {
-    return this.makeRequest('/api/qr/details', {
+    return this.makeRequest(ENDPOINTS.qr.details, {
       method: 'POST',
-      body: JSON.stringify({ qrData })
+      body: { qrData }
     });
   }
 
   async markQRUsed(qrData) {
-    return this.makeRequest('/api/qr/mark-used', {
+    return this.makeRequest(ENDPOINTS.qr.markUsed, {
       method: 'POST',
-      body: JSON.stringify({ qrData })
+      body: { qrData }
     });
   }
 
   // Payment API methods
   async createPaymentOrder(orderData) {
-    return this.makeRequest('/api/payments/create-order', {
+    return this.makeRequest(ENDPOINTS.payments.createOrder, {
       method: 'POST',
-      body: JSON.stringify(orderData)
+      body: orderData
     });
   }
 
   async verifyPayment(paymentData) {
-    return this.makeRequest('/api/payments/verify', {
+    return this.makeRequest(ENDPOINTS.payments.verify, {
       method: 'POST',
-      body: JSON.stringify(paymentData)
+      body: paymentData
     });
   }
 
   // Health check
   async healthCheck() {
-    return this.makeRequest('/api/health');
+    return this.makeRequest(ENDPOINTS.health);
   }
 }
 

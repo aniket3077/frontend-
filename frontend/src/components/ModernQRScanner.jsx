@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs/lib/anime.es.js";
 import axios from "axios";
 import config from '../config/env.js';
+import ENDPOINTS, { urlFor } from '../config/endpoints.js';
 
 const ModernQRScanner = () => {
   const [qrData, setQrData] = useState("");
@@ -80,7 +81,7 @@ const ModernQRScanner = () => {
     }
   }, [ticketDetails]);
 
-  const backendURL = config.API_BASE_URL;
+  const backendURL = config.API_BASE_URL; // still exposed for debug/logs if needed
 
   const handleScanQR = async () => {
     if (!qrData.trim()) {
@@ -115,9 +116,7 @@ const ModernQRScanner = () => {
     setScanning(true);
     
     try {
-      const response = await axios.post(`${backendURL}/api/qr/details`, {
-        qr_data: qrData
-      });
+      const response = await axios.post(urlFor(ENDPOINTS.qr.details), { qr_data: qrData });
 
       if (response.data.success) {
         setTicketDetails(response.data.ticket_info);
@@ -146,7 +145,7 @@ const ModernQRScanner = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post(`${backendURL}/api/qr/mark-used`, {
+      const response = await axios.post(urlFor(ENDPOINTS.qr.markUsed), {
         booking_id: ticketDetails.booking_id,
         ticket_number: ticketDetails.ticket_number
       });
