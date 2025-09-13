@@ -104,7 +104,9 @@ const ModernBookingModal = () => {
       };
       console.log('🔧 Debug: Payload:', payload);
 
-  const res = await axios.post(bookingUrl, payload);
+      const res = await axios.post(bookingUrl, payload, {
+        headers: { 'Content-Type': 'application/json' }
+      });
       if (res.data.success) {
         setBookingId(res.data.booking.id);
         setStep(2);
@@ -159,7 +161,7 @@ const ModernBookingModal = () => {
       const res = await axios.post(urlFor(ENDPOINTS.bookings.addUsers), {
         booking_id: bookingId,
         ...userData,
-      });
+      }, { headers: { 'Content-Type': 'application/json' } });
       if (res.data.success) {
         setStep(3);
       } else {
@@ -191,7 +193,7 @@ const ModernBookingModal = () => {
         booking_id: bookingId,
         userEmail: userData.email,
         userName: userData.name,
-      });
+      }, { headers: { 'Content-Type': 'application/json' } });
 
       const { order, emailSent } = orderRes.data;
 
@@ -222,7 +224,7 @@ const ModernBookingModal = () => {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-            });
+            }, { headers: { 'Content-Type': 'application/json' } });
             if (confirmRes.data.success) {
               setStep(4);
             } else {

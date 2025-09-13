@@ -116,7 +116,11 @@ const ModernQRScanner = () => {
     setScanning(true);
     
     try {
-      const response = await axios.post(urlFor(ENDPOINTS.qr.details), { qr_data: qrData });
+      const response = await axios.post(
+        urlFor(ENDPOINTS.qr.details),
+        { qr_data: qrData },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
       if (response.data.success) {
         setTicketDetails(response.data.ticket_info);
@@ -145,10 +149,14 @@ const ModernQRScanner = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post(urlFor(ENDPOINTS.qr.markUsed), {
-        booking_id: ticketDetails.booking_id,
-        ticket_number: ticketDetails.ticket_number
-      });
+      const response = await axios.post(
+        urlFor(ENDPOINTS.qr.markUsed),
+        {
+          booking_id: ticketDetails.booking_id,
+          ticket_number: ticketDetails.ticket_number
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
       if (response.data.success) {
         setTicketDetails(prev => ({
