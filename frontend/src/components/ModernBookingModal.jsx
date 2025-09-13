@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import config from '../config/env.js';
 
 const ModernBookingModal = () => {
   // Removed isOpen state, always show booking form
@@ -18,10 +19,10 @@ const ModernBookingModal = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const apiBase = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || "http://localhost:5000"; // fallback to backend
+  const apiBase = config.API_BASE_URL;
 
   console.log('🔧 Debug: apiBase =', apiBase);
-  console.log('🔧 Debug: import.meta.env =', import.meta.env);
+  console.log('🔧 Debug: config =', config);
 
   // Malang Raas Dandiya 2025 - Updated Pricing Structure
   const [ticketType, setTicketType] = useState('single'); // 'single' or 'season'
@@ -204,7 +205,7 @@ const ModernBookingModal = () => {
       if (!ok) return alert("Failed to load Razorpay SDK");
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        key: config.RAZORPAY_KEY_ID,
         amount: order.amount,
         currency: order.currency,
         order_id: order.id,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs/lib/anime.es.js";
 import axios from "axios";
+import config from '../config/env.js';
 
 const ModernQRScanner = () => {
   const [qrData, setQrData] = useState("");
@@ -79,7 +80,7 @@ const ModernQRScanner = () => {
     }
   }, [ticketDetails]);
 
-  const backendURL = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || "http://localhost:5000";
+  const backendURL = config.API_BASE_URL;
 
   const handleScanQR = async () => {
     if (!qrData.trim()) {

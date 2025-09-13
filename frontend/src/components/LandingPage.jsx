@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import EnvDebug from "./EnvDebug";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ const LandingPage = () => {
         </div>
       </div>
 
+      {/* Temporary Debug Info */}
+      <EnvDebug />
 
       {/* Event Details */}
       <div className="max-w-7xl mx-auto py-16 px-4">

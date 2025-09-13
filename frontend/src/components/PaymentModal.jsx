@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { paymentService } from '../services/paymentService';
+import config from '../config/env.js';
 
 const PaymentModal = ({ 
   isOpen, 
@@ -46,7 +47,7 @@ const PaymentModal = ({
 
     try {
       // Check Razorpay configuration
-      const razorpayKeyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
+      const razorpayKeyId = config.RAZORPAY_KEY_ID;
       
       // Use test key for development to show actual Razorpay window
       const testKeyId = razorpayKeyId === 'your_razorpay_key_id_here' || razorpayKeyId === 'rzp_live_your_actual_key_id_here' 
