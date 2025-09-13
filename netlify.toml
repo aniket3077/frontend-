@@ -13,7 +13,7 @@
   NODE_VERSION = "18"
   
   # Build environment variables
-  VITE_API_BASE_URL = "https://your-backend-url.vercel.app"
+  VITE_API_BASE_URL = "https://mrd2025.netlify.app"
 
 # Redirect rules for SPA
 [[redirects]]
